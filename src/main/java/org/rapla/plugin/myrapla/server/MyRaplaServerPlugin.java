@@ -24,11 +24,11 @@ import org.rapla.server.ServerServiceContainer;
    to the rapla-system.
  */
 
-public class MyDistServerPlugin implements PluginDescriptor<ServerServiceContainer>
+public class MyRaplaServerPlugin implements PluginDescriptor<ServerServiceContainer>
 {
     Logger logger;
     
-    public MyDistServerPlugin(Logger logger) {
+    public MyRaplaServerPlugin(Logger logger) {
         this.logger = logger;
     }
    
