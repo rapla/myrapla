@@ -1,11 +1,11 @@
-package org.rapla.plugin.mydist;
+package org.rapla.plugin.myrapla;
 
 import org.rapla.client.ClientServiceContainer;
 import org.rapla.framework.Configuration;
 import org.rapla.framework.PluginDescriptor;
 import org.rapla.framework.RaplaContextException;
 
-public class MyDistPlugin implements PluginDescriptor<ClientServiceContainer>
+public class MyRaplaPlugin implements PluginDescriptor<ClientServiceContainer>
 {
     public static final boolean ENABLE_BY_DEFAULT = true;
       

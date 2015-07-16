@@ -10,12 +10,12 @@
  | program with every library, which license fulfills the Open Source       |
  | Definition as published by the Open Source Initiative (OSI).             |
  *--------------------------------------------------------------------------*/
-package org.rapla.plugin.mydist.server;
+package org.rapla.plugin.myrapla.server;
 import org.rapla.framework.Configuration;
 import org.rapla.framework.PluginDescriptor;
 import org.rapla.framework.RaplaContextException;
 import org.rapla.framework.logger.Logger;
-import org.rapla.plugin.mydist.MyDistPlugin;
+import org.rapla.plugin.myrapla.MyRaplaPlugin;
 import org.rapla.server.RaplaServerExtensionPoints;
 import org.rapla.server.ServerServiceContainer;
 
@@ -41,7 +41,7 @@ public class MyDistServerPlugin implements PluginDescriptor<ServerServiceContain
      * @see org.rapla.framework.PluginDescriptor
      */
     public void provideServices(ServerServiceContainer container, Configuration config) throws RaplaContextException {
-        if ( !config.getAttributeAsBoolean("enabled", MyDistPlugin.ENABLE_BY_DEFAULT) )
+        if ( !config.getAttributeAsBoolean("enabled", MyRaplaPlugin.ENABLE_BY_DEFAULT) )
         	return;
         container.addContainerProvidedComponent( RaplaServerExtensionPoints.HTML_MAIN_MENU_EXTENSION_POINT, MyMenuEntry.class);
         //container.addRemoteJsonFactory( RaplaJsonService.class, RaplaJsonServiceFactory.class, config);

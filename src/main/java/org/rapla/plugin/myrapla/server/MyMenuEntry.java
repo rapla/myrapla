@@ -1,4 +1,4 @@
-package org.rapla.plugin.mydist.server;
+package org.rapla.plugin.myrapla.server;
 
 import org.rapla.framework.RaplaContext;
 import org.rapla.servletpages.DefaultHTMLMenuEntry;
