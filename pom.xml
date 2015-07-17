@@ -27,13 +27,6 @@
 			<version>2.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.rapla</groupId>
-			<artifactId>rapla</artifactId>
-			<version>2.0-SNAPSHOT</version>
-			<classifier>tests</classifier>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>${jetty.version}</version>
@@ -113,7 +106,21 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<resources>
+			<resource>
+				<directory>${basedir}/generated-resources</directory>
+			</resource>
+		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -122,14 +129,14 @@
 					<archiveClasses>true</archiveClasses>
 				</configuration>
 			</plugin>
-    		<plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.1.1</version>
 				<executions>
 					<execution>
 						<id>PluginList</id>
-						<phase>prepare-package</phase>
+						<phase>compile</phase>
 						<goals>
 							<goal>java</goal>
 						</goals>
@@ -148,12 +155,64 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.3.1.v20150714</version>
 				<configuration>
-				   <httpConnector>
-				   <port>8051</port>
-				   </httpConnector>
-				   <contextXml>src/main/etc/rapla-develop.xml</contextXml>
-			   </configuration>
+					<httpConnector>
+						<port>8051</port>
+					</httpConnector>
+					<contextXml>src/main/etc/rapla-develop.xml</contextXml>
+				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>exec-maven-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>java</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute>
+											<runOnIncremental>true</runOnIncremental>
+										</execute>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
+	<repositories>
+		<repository>
+			<id>Maven nuxeo</id>
+			<url>http://maven.nuxeo.org/nexus/content/repositories/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>Maven Repo1</id>
+			<url>https://repo1.maven.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>
