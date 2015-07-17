@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -9,9 +10,13 @@
 	<packaging>war</packaging>
 
 	<properties>
+		<!-- <rapla.gwt.plugins>org.rapla.gwt.client.plugin.TestGWTModule,</rapla.gwt.plugins> -->
+		<rapla.gwt.plugins>org.rapla.plugin.myrapla.client.MyRaplaGWTModule</rapla.gwt.plugins>
 		<jetty.version>8.1.17.v20150415</jetty.version>
 		<slf4j.version>1.7.12</slf4j.version>
 		<logback.version>1.1.3</logback.version>
+		<gwt.version>2.7.0</gwt.version>
+		<gwt.plugin.version>2.7.0</gwt.plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -25,6 +30,20 @@
 			<groupId>org.rapla</groupId>
 			<artifactId>rapla</artifactId>
 			<version>2.0-SNAPSHOT</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.rapla</groupId>
+			<artifactId>rapla</artifactId>
+			<version>2.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt.inject</groupId>
+			<artifactId>gin</artifactId>
+			<version>2.1.2</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -86,6 +105,28 @@
 			<version>${slf4j.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- <dependency> <groupId>com.google.gwt</groupId> <artifactId>gwt-dev</artifactId> 
+			<version>${gwt.version}</version> <scope>provided</scope> </dependency> <dependency> 
+			<groupId>com.google.gwt</groupId> <artifactId>gwt-user</artifactId> <version>${gwt.version}</version> 
+			<scope>provided</scope> </dependency> -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-codeserver</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -105,6 +146,7 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<resources>
 			<resource>
@@ -112,6 +154,23 @@
 			</resource>
 		</resources>
 		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>${gwt.plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- <runTarget>Rapla.html</runTarget> -->
+					<module>org.rapla.gwt.Rapla</module>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -127,6 +186,15 @@
 				<version>2.6</version>
 				<configuration>
 					<archiveClasses>true</archiveClasses>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -155,6 +223,7 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.3.1.v20150714</version>
 				<configuration>
+					<webAppSourceDirectory>war</webAppSourceDirectory>
 					<httpConnector>
 						<port>8051</port>
 					</httpConnector>
