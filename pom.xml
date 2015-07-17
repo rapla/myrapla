@@ -148,11 +148,6 @@
 	</dependencies>
 
 	<build>
-		<resources>
-			<resource>
-				<directory>${basedir}/generated-resources</directory>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
