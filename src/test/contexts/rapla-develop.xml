@@ -15,12 +15,9 @@ detected.
   <!-- 
  <Set name="resourceBase"><SystemProperty name="jetty.home" default="."/>/war</Set>
   -->
-  <!-- 
- <Set name="war">C:/Users/Christopher/.m2/repository/org/rapla/rapla/2.0-SNAPSHOT/rapla-2.0-SNAPSHOT.war</Set>
-  -->
  <Set name="baseResource">
     <New class="org.eclipse.jetty.util.resource.ResourceCollection">
-        <Arg>C:\Users\Christopher\.m2\repository\org\rapla\rapla\2.0-SNAPSHOT,src/main/webapp</Arg>
+        <Arg>target/originwar,src/main/webapp</Arg>
     </New>
   </Set>
   <!-- this is the property for the deployment context 

@@ -151,6 +151,34 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.10</version>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.rapla</groupId>
+									<artifactId>rapla</artifactId>
+									<version>2.0-SNAPSHOT</version>
+									<type>war</type>
+									<needsProcessing>true</needsProcessing>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/originwar</outputDirectory>
+									<includes>**/*</includes>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>${gwt.plugin.version}</version>
@@ -164,6 +192,7 @@
 				<configuration>
 					<!-- <runTarget>Rapla.html</runTarget> -->
 					<module>org.rapla.Rapla</module>
+					<gwtSdkFirstInClasspath>true</gwtSdkFirstInClasspath>
 				</configuration>
 			</plugin>
 
@@ -251,6 +280,21 @@
 										<versionRange>[1.0.0,)</versionRange>
 										<goals>
 											<goal>java</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute>
+											<runOnIncremental>true</runOnIncremental>
+										</execute>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>unpack</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
