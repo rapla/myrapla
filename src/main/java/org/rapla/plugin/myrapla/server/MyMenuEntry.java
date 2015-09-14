@@ -1,7 +1,7 @@
 package org.rapla.plugin.myrapla.server;
 
 import org.rapla.framework.RaplaContext;
-import org.rapla.servletpages.DefaultHTMLMenuEntry;
+import org.rapla.server.servletpages.DefaultHTMLMenuEntry;
 
 public class MyMenuEntry extends DefaultHTMLMenuEntry 
 {
