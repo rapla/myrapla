@@ -12,12 +12,12 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.IsWidget;
 
-@DefaultImplementation(of=MyView.class, context=InjectionContext.gwt)
-public class MyViewImpl extends AbstractView<Presenter> implements MyView<IsWidget>
+@DefaultImplementation(of = MyView.class, context = InjectionContext.gwt)
+public class MyViewImpl extends AbstractView<Presenter>implements MyView<IsWidget>
 {
-    
+
     private final FlowPanel content = new FlowPanel();
-    
+
     @Inject
     public MyViewImpl()
     {

@@ -10,7 +10,7 @@ import org.rapla.framework.RaplaException;
 import org.rapla.inject.Extension;
 import org.rapla.plugin.myview.MyView.Presenter;
 
-@Extension(provides=CalendarPlugin.class)
+@Extension(provides = CalendarPlugin.class)
 public class MyViewPresenter<W> implements Presenter, CalendarPlugin<W>
 {
     private final MyView<W> view;
