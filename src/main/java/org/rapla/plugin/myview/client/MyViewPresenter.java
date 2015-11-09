@@ -1,17 +1,15 @@
-package org.rapla.plugin.myview;
-
-import java.util.Date;
-
-import javax.inject.Inject;
+package org.rapla.plugin.myview.client;
 
 import org.rapla.client.base.CalendarPlugin;
 import org.rapla.components.util.DateTools;
 import org.rapla.framework.RaplaException;
 import org.rapla.inject.Extension;
-import org.rapla.plugin.myview.MyView.Presenter;
 
-@Extension(provides = CalendarPlugin.class)
-public class MyViewPresenter<W> implements Presenter, CalendarPlugin<W>
+import javax.inject.Inject;
+import java.util.Date;
+
+//@Extension(provides = CalendarPlugin.class,id="myview")
+public class MyViewPresenter<W> implements MyView.Presenter, CalendarPlugin<W>
 {
     private final MyView<W> view;
 
@@ -39,12 +37,6 @@ public class MyViewPresenter<W> implements Presenter, CalendarPlugin<W>
     public void updateContent() throws RaplaException
     {
         // Update view
-    }
-
-    @Override
-    public String getId()
-    {
-        return "myId";
     }
 
     @Override
