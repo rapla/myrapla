@@ -1,12 +1,14 @@
-package org.rapla.plugin.myswing.swing;
+package org.rapla.plugin.mycalendar.swing;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
 import javax.inject.Provider;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 import org.rapla.RaplaResources;
 import org.rapla.client.ReservationController;
@@ -20,10 +22,13 @@ import org.rapla.client.swing.toolkit.DialogUI.DialogUiFactory;
 import org.rapla.components.calendar.DateRenderer;
 import org.rapla.components.calendar.DateRendererAdapter;
 import org.rapla.components.calendar.WeekendHighlightRenderer;
+import org.rapla.components.calendar.DateRenderer.RenderingInfo;
+import org.rapla.components.calendarview.Builder;
 import org.rapla.components.calendarview.GroupStartTimesStrategy;
 import org.rapla.components.calendarview.swing.AbstractSwingCalendar;
 import org.rapla.components.calendarview.swing.SmallDaySlot;
 import org.rapla.components.calendarview.swing.SwingMonthView;
+import org.rapla.components.calendarview.swing.SwingWeekView;
 import org.rapla.components.calendarview.swing.ViewListener;
 import org.rapla.components.iolayer.IOInterface;
 import org.rapla.components.util.DateTools;
@@ -54,70 +59,47 @@ public class MySwingView extends SwingWeekCalendar implements SwingCalendarView
 
     public static Color DATE_NUMBER_COLOR_HIGHLIGHTED = Color.black;
 
-    protected AbstractSwingCalendar createView(boolean editable) {
-        boolean showScrollPane = editable;
-        final DateRenderer dateRenderer;
+    protected AbstractSwingCalendar createView(boolean showScrollPane) {
         final DateRendererAdapter dateRendererAdapter; 
-        dateRenderer = dateRendererProvider.get();
+        DateRenderer dateRenderer = dateRendererProvider.get();
         dateRendererAdapter = new DateRendererAdapter(dateRenderer, getRaplaLocale().getTimeZone(), getRaplaLocale().getLocale());
 
-        final WeekendHighlightRenderer weekdayRenderer = new WeekendHighlightRenderer();
-        /** renderer for weekdays in month-view */
-        SwingMonthView monthView = new SwingMonthView( showScrollPane ) {
+        final SwingWeekView wv = new SwingWeekView( showScrollPane ) {
             
-            protected JComponent createSlotHeader(int weekday) {
-                JComponent component = super.createSlotHeader( weekday );
-                if (isEditable()) {
-                    component.setOpaque(true);
-                    Color color = weekdayRenderer.getRenderingInfo(weekday, 1, 1, 1).getBackgroundColor();
-                    component.setBackground(color);
-                }
-                return component;
-            }
-
-            @Override
-            protected SmallDaySlot createSmallslot(int pos, Date date) {
-                String header = "" + (pos + 1);
-                DateRenderer.RenderingInfo info = dateRendererAdapter.getRenderingInfo(date);
-                Color color = getNumberColor( date);
-                Color backgroundColor = null;
-                String tooltipText = null;
-                
-                if (info != null) {
-                    backgroundColor = info.getBackgroundColor();
-                    if (info.getForegroundColor() != null) {
-                        color = info.getForegroundColor();
-                    }
-                    tooltipText = info.getTooltipText();
-                    if ( tooltipText != null)
-                    {
-                         // commons not on client lib path
-                        //StringUtils.abbreviate(tooltipText, 15) 
-//                      header = tooltipText + " " + (pos+1);
-                    }
-                }
-                final SmallDaySlot smallslot = super.createSmallslot(header, color, backgroundColor);
-                if (tooltipText != null) {
-                    smallslot.setToolTipText(tooltipText);
-                }
-                return smallslot;
-            }
-
-            protected Color getNumberColor( Date date )
-            {
+            protected JComponent createSlotHeader(Integer column) {
+                JLabel component = (JLabel) super.createSlotHeader(column);
+                Date date = getDateFromColumn(column);
                 boolean today = DateTools.isSameDay(getQuery().today().getTime(), date.getTime());
                 if ( today)
                 {
-                    return DATE_NUMBER_COLOR_HIGHLIGHTED;
+                    component.setFont(component.getFont().deriveFont( Font.BOLD));
                 }
-                else
-                {
-                    return super.getNumberColor( date );
+                if (isEditable()  ) {
+                    component.setOpaque(true);
+                    RenderingInfo info = dateRendererAdapter.getRenderingInfo(date);
+                    if (info.getBackgroundColor() != null) {
+                        component.setBackground(info.getBackgroundColor());
+                    }
+                    if (info.getForegroundColor() != null) {
+                        component.setForeground(info.getForegroundColor());
+                    }
+                    if (info.getTooltipText() != null) {
+                        component.setToolTipText(info.getTooltipText());
+                    }
                 }
+                return component;
+            }
+            
+        
+
+            @Override
+            public void rebuild(Builder b) {
+                // update week
+                weekTitle.setText(getI18n().calendarweek( getStartDate()));
+                super.rebuild(b);
             }
         };
-        monthView.setDaysInView( 25);
-        return monthView;
+        return wv;
     }
 
     protected ViewListener createListener() throws RaplaException {

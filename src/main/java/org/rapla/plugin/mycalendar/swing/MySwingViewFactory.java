@@ -1,4 +1,4 @@
-package org.rapla.plugin.myswing.swing;
+package org.rapla.plugin.mycalendar.swing;
 
 import java.util.Set;
 
