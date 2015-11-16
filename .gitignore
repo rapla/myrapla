@@ -2,4 +2,7 @@
 /.settings/
 /data/
 /logs/
+/.idea/
 .factorypath
+build.properties
+rapla.ks
