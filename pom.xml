@@ -409,7 +409,7 @@
 							<groupId>org.rapla</groupId>
 							<artifactId>rapla</artifactId>
 							<excludes>
-								<exclude>Rapla/**</exclude>
+								<exclude>Rapla/*cache.js</exclude>
 								<exclude>webclient/*.jar</exclude>
 								<exclude>WEB-INF/classes/clientlibs.properties</exclude>
 								<exclude>WEB-INF/classes/moduleDescription</exclude>
