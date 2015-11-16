@@ -1,17 +1,18 @@
 package org.rapla.plugin.myview.client;
 
+import java.util.Date;
+
+import javax.inject.Inject;
+
 import org.rapla.client.base.CalendarPlugin;
 import org.rapla.components.util.DateTools;
 import org.rapla.framework.RaplaException;
 import org.rapla.inject.Extension;
 
-import javax.inject.Inject;
-import java.util.Date;
-
-//@Extension(provides = CalendarPlugin.class,id="myview")
-public class MyViewPresenter<W> implements MyView.Presenter, CalendarPlugin<W>
+@Extension(provides = CalendarPlugin.class, id = "myview")
+public class MyViewPresenter implements MyView.Presenter, CalendarPlugin
 {
-    private final MyView<W> view;
+    private final MyView view;
 
     @SuppressWarnings("unchecked")
     @Inject
@@ -28,7 +29,7 @@ public class MyViewPresenter<W> implements MyView.Presenter, CalendarPlugin<W>
     }
 
     @Override
-    public W provideContent()
+    public Object provideContent()
     {
         return this.view.provideContent();
     }
