@@ -4,5 +4,5 @@
 /logs/
 /.idea/
 .factorypath
-build.properties
-rapla.ks
+/build.properties
+/rapla.ks

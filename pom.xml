@@ -17,6 +17,7 @@
 		<logback.version>1.1.3</logback.version>
 		<rapla.version>2.0-SNAPSHOT</rapla.version>
 		<gwt.version>2.8.0-SNAPSHOT</gwt.version>
+		<dagger.version>2.0.2</dagger.version>
 		<gwt.plugin.version>2.8.0-SNAPSHOT</gwt.plugin.version>
         <gwt.plugin.productionmode>false</gwt.plugin.productionmode>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -114,7 +115,7 @@
         <dependency>
             <groupId>com.google.dagger</groupId>
             <artifactId>dagger-compiler</artifactId>
-            <version>2.0.2</version>
+            <version>${dagger.version}</version>
             <scope>provided</scope>
         </dependency>
 		<!-- logging -->
@@ -356,6 +357,22 @@
 									<overWrite>true</overWrite>
 									<outputDirectory>${project.build.directory}/${project.build.finalName}/webclient</outputDirectory>
 								</artifactItem>
+								<artifactItem>
+									<groupId>org.rapla</groupId>
+									<artifactId>gwtjsonrpc</artifactId>
+									<version>${gwtjsonrpc.version}</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/${project.build.finalName}/webclient</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>com.google.dagger</groupId>
+									<artifactId>dagger</artifactId>
+									<version>${dagger.version}</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${project.build.directory}/${project.build.finalName}/webclient</outputDirectory>
+								</artifactItem>
 							</artifactItems>
 							<outputDirectory>${project.build.directory}/wars</outputDirectory>
 							<overWriteReleases>false</overWriteReleases>
@@ -368,6 +385,35 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>1.8</version>
 				<executions>
+					<execution>
+						<id>loadbuildproperties</id>
+						<phase>prepare-package</phase>
+						<configuration>
+							<exportAntProperties>true</exportAntProperties>
+							<tasks>
+								<echo>Reading build.properties</echo>
+								<available file="${basedir}/${build.properties}"
+										   property="build.properties.present" />
+
+								<copy todir="${basedir}">
+									<fileset dir="${basedir}">
+										<include name="build.properties.template" unless="build.properties.present" />
+									</fileset>
+									<mapper type="glob" from="*.template" to="*" />
+								</copy>
+								<property file="${basedir}/build.properties" />
+								<property name="keystore.file" value="${basedir}/raplaselfsigned.ks" />
+								<property name="keystore.password" value="raplaselfsigned" />
+								<property name="keystore.keypass" value="${keystore.password}" />
+								<property name="keystore.alias" value="rapla" />
+								<property name="doc.name" value="rapla" />
+								<property name="doc.version">${project.version}</property>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
 					<execution>
 						<id>generateclientlibsproperties</id>
 						<phase>prepare-package</phase>
@@ -398,6 +444,29 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jarsigner-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<alias>${keystore.alias}</alias>
+					<keystore>${keystore.file}</keystore>
+					<keypass>${keystore.keypass}</keypass>
+					<storepass>${keystore.password}</storepass>
+					<archiveDirectory>${project.build.directory}/${project.build.finalName}/webclient</archiveDirectory>
+					<includes>
+						<include>*.jar</include>
+					</includes>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
