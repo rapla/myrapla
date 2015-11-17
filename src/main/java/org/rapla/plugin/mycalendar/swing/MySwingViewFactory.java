@@ -80,6 +80,12 @@ public class MySwingViewFactory implements SwingViewFactory
         this.appointmentFormater = appointmentFormater;
 
     }
+    
+    @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
 
     @Override
     public SwingCalendarView createSwingView(CalendarModel model, boolean editable) throws RaplaException
