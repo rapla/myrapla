@@ -48,80 +48,92 @@ import org.rapla.plugin.weekview.client.swing.SwingWeekCalendar;
 public class MySwingView extends SwingWeekCalendar implements SwingCalendarView
 {
 
-    public MySwingView(ClientFacade facade, RaplaResources i18n, RaplaLocale raplaLocale, Logger logger, CalendarModel settings, boolean editable, Set<ObjectMenuFactory> objectMenuFactories,
-            MenuFactory menuFactory, Provider<DateRenderer> dateRendererProvider, CalendarSelectionModel calendarSelectionModel, RaplaClipboard clipboard,
-            ReservationController reservationController, InfoFactory infoFactory, RaplaImages raplaImages, DateRenderer dateRenderer, DialogUiFactory dialogUiFactory, PermissionController permissionController, IOInterface ioInterface, AppointmentFormater appointmentFormater)
-                    throws RaplaException
+    public MySwingView(ClientFacade facade, RaplaResources i18n, RaplaLocale raplaLocale, Logger logger, CalendarModel settings, boolean editable,
+            boolean printing, Set<ObjectMenuFactory> objectMenuFactories, MenuFactory menuFactory, Provider<DateRenderer> dateRendererProvider,
+            CalendarSelectionModel calendarSelectionModel, RaplaClipboard clipboard, ReservationController reservationController, InfoFactory infoFactory,
+            RaplaImages raplaImages, DateRenderer dateRenderer, DialogUiFactory dialogUiFactory, PermissionController permissionController,
+            IOInterface ioInterface, AppointmentFormater appointmentFormater) throws RaplaException
     {
-        super(facade, i18n, raplaLocale, logger, settings, editable, objectMenuFactories, menuFactory, dateRendererProvider, calendarSelectionModel, clipboard, reservationController,
-                infoFactory, raplaImages, dateRenderer, dialogUiFactory, permissionController, ioInterface, appointmentFormater);
+        super(facade, i18n, raplaLocale, logger, settings, editable, printing, objectMenuFactories, menuFactory, dateRendererProvider, calendarSelectionModel,
+                clipboard, reservationController, infoFactory, raplaImages, dateRenderer, dialogUiFactory, permissionController, ioInterface,
+                appointmentFormater);
     }
 
     public static Color DATE_NUMBER_COLOR_HIGHLIGHTED = Color.black;
 
-    protected AbstractSwingCalendar createView(boolean showScrollPane) {
-        final DateRendererAdapter dateRendererAdapter; 
+    protected AbstractSwingCalendar createView(boolean showScrollPane)
+    {
+        final DateRendererAdapter dateRendererAdapter;
         DateRenderer dateRenderer = dateRendererProvider.get();
         dateRendererAdapter = new DateRendererAdapter(dateRenderer, getRaplaLocale().getTimeZone(), getRaplaLocale().getLocale());
 
-        final SwingWeekView wv = new SwingWeekView( showScrollPane ) {
-            
-            protected JComponent createSlotHeader(Integer column) {
+        final SwingWeekView wv = new SwingWeekView(showScrollPane)
+        {
+
+            protected JComponent createSlotHeader(Integer column)
+            {
                 JLabel component = (JLabel) super.createSlotHeader(column);
                 Date date = getDateFromColumn(column);
                 boolean today = DateTools.isSameDay(getQuery().today().getTime(), date.getTime());
-                if ( today)
+                if (today)
                 {
-                    component.setFont(component.getFont().deriveFont( Font.BOLD));
+                    component.setFont(component.getFont().deriveFont(Font.BOLD));
                 }
-                if (isEditable()  ) {
+                if (isEditable())
+                {
                     component.setOpaque(true);
                     RenderingInfo info = dateRendererAdapter.getRenderingInfo(date);
-                    if (info.getBackgroundColor() != null) {
+                    if (info.getBackgroundColor() != null)
+                    {
                         component.setBackground(info.getBackgroundColor());
                     }
-                    if (info.getForegroundColor() != null) {
+                    if (info.getForegroundColor() != null)
+                    {
                         component.setForeground(info.getForegroundColor());
                     }
-                    if (info.getTooltipText() != null) {
+                    if (info.getTooltipText() != null)
+                    {
                         component.setToolTipText(info.getTooltipText());
                     }
                 }
                 return component;
             }
-            
-        
 
             @Override
-            public void rebuild(Builder b) {
+            public void rebuild(Builder b)
+            {
                 // update week
-                weekTitle.setText(getI18n().calendarweek( getStartDate()));
+                weekTitle.setText(getI18n().calendarweek(getStartDate()));
                 super.rebuild(b);
             }
         };
         return wv;
     }
 
-    protected ViewListener createListener() throws RaplaException {
-        RaplaCalendarViewListener listener = new RaplaCalendarViewListener(getClientFacade(), getI18n(), getRaplaLocale(), getLogger(), model, view.getComponent(), objectMenuFactories, menuFactory, calendarSelectionModel, clipboard, reservationController, infoFactory, raplaImages, dialogUiFactory, permissionController);
-        listener.setKeepTime( true);
+    protected ViewListener createListener() throws RaplaException
+    {
+        RaplaCalendarViewListener listener = new RaplaCalendarViewListener(getClientFacade(), getI18n(), getRaplaLocale(), getLogger(), model,
+                view.getComponent(), objectMenuFactories, menuFactory, calendarSelectionModel, clipboard, reservationController, infoFactory, raplaImages,
+                dialogUiFactory, permissionController);
+        listener.setKeepTime(true);
         return listener;
     }
 
     protected RaplaBuilder createBuilder() throws RaplaException
     {
         RaplaBuilder builder = super.createBuilder();
-        builder.setSmallBlocks( true );
-        GroupStartTimesStrategy strategy = new GroupStartTimesStrategy( );
-        builder.setBuildStrategy( strategy );
+        builder.setSmallBlocks(true);
+        GroupStartTimesStrategy strategy = new GroupStartTimesStrategy();
+        builder.setBuildStrategy(strategy);
         return builder;
     }
 
-    protected void configureView() throws RaplaException {
+    protected void configureView() throws RaplaException
+    {
         CalendarOptions calendarOptions = getCalendarOptions();
         Set<Integer> excludeDays = calendarOptions.getExcludeDays();
 
-        view.setExcludeDays( excludeDays );
+        view.setExcludeDays(excludeDays);
         view.setToDate(model.getSelectedDate());
     }
 
@@ -129,6 +141,5 @@ public class MySwingView extends SwingWeekCalendar implements SwingCalendarView
     {
         return Calendar.MONTH;
     }
-
 
 }
