@@ -20,20 +20,17 @@ import org.rapla.client.swing.SwingCalendarView;
 import org.rapla.client.swing.images.RaplaImages;
 import org.rapla.client.swing.toolkit.DialogUI.DialogUiFactory;
 import org.rapla.components.calendar.DateRenderer;
-import org.rapla.components.calendar.DateRendererAdapter;
-import org.rapla.components.calendar.WeekendHighlightRenderer;
 import org.rapla.components.calendar.DateRenderer.RenderingInfo;
+import org.rapla.components.calendar.DateRendererAdapter;
 import org.rapla.components.calendarview.Builder;
 import org.rapla.components.calendarview.GroupStartTimesStrategy;
 import org.rapla.components.calendarview.swing.AbstractSwingCalendar;
-import org.rapla.components.calendarview.swing.SmallDaySlot;
-import org.rapla.components.calendarview.swing.SwingMonthView;
 import org.rapla.components.calendarview.swing.SwingWeekView;
 import org.rapla.components.calendarview.swing.ViewListener;
 import org.rapla.components.iolayer.IOInterface;
 import org.rapla.components.util.DateTools;
+import org.rapla.components.util.DateTools.IncrementSize;
 import org.rapla.entities.domain.AppointmentFormater;
-import org.rapla.entities.domain.permission.PermissionController;
 import org.rapla.facade.CalendarModel;
 import org.rapla.facade.CalendarOptions;
 import org.rapla.facade.CalendarSelectionModel;
@@ -51,11 +48,11 @@ public class MySwingView extends SwingWeekCalendar implements SwingCalendarView
     public MySwingView(ClientFacade facade, RaplaResources i18n, RaplaLocale raplaLocale, Logger logger, CalendarModel settings, boolean editable,
             boolean printing, Set<ObjectMenuFactory> objectMenuFactories, MenuFactory menuFactory, Provider<DateRenderer> dateRendererProvider,
             CalendarSelectionModel calendarSelectionModel, RaplaClipboard clipboard, ReservationController reservationController, InfoFactory infoFactory,
-            RaplaImages raplaImages, DateRenderer dateRenderer, DialogUiFactory dialogUiFactory, PermissionController permissionController,
+            RaplaImages raplaImages, DateRenderer dateRenderer, DialogUiFactory dialogUiFactory,
             IOInterface ioInterface, AppointmentFormater appointmentFormater) throws RaplaException
     {
         super(facade, i18n, raplaLocale, logger, settings, editable, printing, objectMenuFactories, menuFactory, dateRendererProvider, calendarSelectionModel,
-                clipboard, reservationController, infoFactory, raplaImages, dateRenderer, dialogUiFactory, permissionController, ioInterface,
+                clipboard, reservationController, infoFactory, raplaImages, dateRenderer, dialogUiFactory, ioInterface,
                 appointmentFormater);
     }
 
@@ -114,7 +111,7 @@ public class MySwingView extends SwingWeekCalendar implements SwingCalendarView
     {
         RaplaCalendarViewListener listener = new RaplaCalendarViewListener(getClientFacade(), getI18n(), getRaplaLocale(), getLogger(), model,
                 view.getComponent(), objectMenuFactories, menuFactory, calendarSelectionModel, clipboard, reservationController, infoFactory, raplaImages,
-                dialogUiFactory, permissionController);
+                dialogUiFactory);
         listener.setKeepTime(true);
         return listener;
     }
@@ -137,9 +134,9 @@ public class MySwingView extends SwingWeekCalendar implements SwingCalendarView
         view.setToDate(model.getSelectedDate());
     }
 
-    public int getIncrementSize()
+    public DateTools.IncrementSize getIncrementSize()
     {
-        return Calendar.MONTH;
+        return IncrementSize.DAY_OF_YEAR;
     }
 
 }

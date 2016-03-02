@@ -21,7 +21,6 @@ import org.rapla.client.swing.toolkit.DialogUI.DialogUiFactory;
 import org.rapla.components.calendar.DateRenderer;
 import org.rapla.components.iolayer.IOInterface;
 import org.rapla.entities.domain.AppointmentFormater;
-import org.rapla.entities.domain.permission.PermissionController;
 import org.rapla.facade.CalendarModel;
 import org.rapla.facade.CalendarSelectionModel;
 import org.rapla.facade.ClientFacade;
@@ -51,7 +50,6 @@ public class MySwingViewFactory implements SwingViewFactory
     private RaplaImages raplaImages;
     private DateRenderer dateRenderer;
     private DialogUiFactory dialogUiFactory;
-    private PermissionController permissionController;
     private IOInterface ioInterface;
     private AppointmentFormater appointmentFormater;
 
@@ -59,7 +57,7 @@ public class MySwingViewFactory implements SwingViewFactory
     public MySwingViewFactory(ClientFacade facade, RaplaResources i18n, RaplaLocale raplaLocale, Logger logger, Set<ObjectMenuFactory> objectMenuFactories,
             MenuFactory menuFactory, Provider<DateRenderer> dateRendererProvider, CalendarSelectionModel calendarSelectionModel, RaplaClipboard clipboard,
             ReservationController reservationController, InfoFactory infoFactory, RaplaImages raplaImages, DateRenderer dateRenderer,
-            DialogUiFactory dialogUiFactory, PermissionController permissionController, IOInterface ioInterface, AppointmentFormater appointmentFormater)
+            DialogUiFactory dialogUiFactory, IOInterface ioInterface, AppointmentFormater appointmentFormater)
     {
         this.facade = facade;
         this.i18n = i18n;
@@ -75,7 +73,6 @@ public class MySwingViewFactory implements SwingViewFactory
         this.raplaImages = raplaImages;
         this.dateRenderer = dateRenderer;
         this.dialogUiFactory = dialogUiFactory;
-        this.permissionController = permissionController;
         this.ioInterface = ioInterface;
         this.appointmentFormater = appointmentFormater;
 
@@ -91,8 +88,8 @@ public class MySwingViewFactory implements SwingViewFactory
     public SwingCalendarView createSwingView(CalendarModel model, boolean editable, boolean printing) throws RaplaException
     {
         return new MySwingView(facade, i18n, raplaLocale, logger, model, editable, printing, objectMenuFactories, menuFactory, dateRendererProvider,
-                calendarSelectionModel, clipboard, reservationController, infoFactory, raplaImages, dateRenderer, dialogUiFactory, permissionController,
-                ioInterface, appointmentFormater);
+                calendarSelectionModel, clipboard, reservationController, infoFactory, raplaImages, dateRenderer, dialogUiFactory, ioInterface,
+                appointmentFormater);
     }
 
     @Override
